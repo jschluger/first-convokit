@@ -1,5 +1,6 @@
 from convokit import Transformer, Corpus
 import copy
+from collections import defaultdict
 from heapq import heappush, heappop
 
 class Rank(Transformer):
@@ -40,4 +41,13 @@ class Rank(Transformer):
         while len(h) > 0:
             yield heappop(h)
         
+    
+
+    def rank2(self, corpus: Corpus, score=None):
+        if score==None:
+            score = self.convo_length
+        h = defaultdict(list)
+        for convo in corpus.iter_conversations():
+            h[score(corpus, convo)].append(convo)
+        return h
     
